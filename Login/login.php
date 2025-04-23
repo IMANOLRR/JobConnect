@@ -1,10 +1,10 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Plataforma de Empleos</title>
-    <link rel="stylesheet" href="assets/css/estilos.css"> <!-- Puedes crear luego este CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/estilos.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,16 +46,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido a la Plataforma de Empleos JobConnect</h1>
-        <p>¿Quién eres?</p>
+        <h2>Selecciona tu Rol</h2>
         <div class="btn-group">
-            <a href="registro/registro_candidato.php">👤 Soy Candidato</a>
-            <a href="registro/registro_empresa.php">🏢 Soy Empresa</a>
-            <a href="login/login.php">🔐 Ya tengo una cuenta</a>
-        </div>
-        <div class="footer">
-            Proyecto realizado en PHP y MySQL.
+            <a href="../Login/login_empresa.php">👤 Iniciar Sesión como Empresa</a>
+            <a href="../Login/login_candidato.php">🏢Iniciar Sesión como Candidato</a>
         </div>
     </div>
 </body>
-</html>
