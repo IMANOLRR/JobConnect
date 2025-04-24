@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $clave = $_POST['contrasena'];
 
     // Buscar el usuario por correo y tipo = 'empresa'
-    $stmt = $conn->prepare("SELECT id, contrasena FROM usuarios WHERE correo = ? AND tipo = 'empresa'");
+    $stmt = $conn->prepare("SELECT id, contrasena FROM empresas WHERE correo = ?");
     $stmt->bind_param("s", $correo);
     $stmt->execute();
     $stmt->store_result();
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificar la contraseña
         if (password_verify($clave, $hash_clave)) {
-            $_SESSION['usuario_id'] = $id;
+            $_SESSION['empresa_id'] = $id;
             $_SESSION['rol'] = 'empresa';
 
             header("Location: ../Empresa/dashboard.php");
@@ -39,19 +39,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login Candidato</title>
-    <link rel="stylesheet" href="../css/estilos.css">
+    <title>Login Empresa</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
-    <div class="container">
-        <h2>Iniciar Sesión como Empresa</h2>
-        <form method="POST" action="../Login/login_empresa.php">
-            <input type="email" name="correo" placeholder="Correo electrónico" required><br>
-            <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-            <button type="submit" <a href="../Empresa/dashboard.php">Ingresar</a></button>
-        </form>
-        <p>¿No tienes cuenta? <a href="../index.php">Regístrate aquí</a></p>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4>🏢 Iniciar Sesión - Empresa</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form method="POST" action="../Login/login_empresa.php">
+                            <div class="mb-3">
+                                <label for="correo" class="form-label">Correo electrónico</label>
+                                <input type="email" name="correo" id="correo" class="form-control" placeholder="empresa@ejemplo.com" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contrasena" class="form-label">Contraseña</label>
+                                <input type="password" name="contrasena" id="contrasena" class="form-control" required>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Ingresar</button>
+                            </div>
+                        </form>
+
+                        <div class="mt-3 text-center">
+                            <p>¿No tienes cuenta? <a href="../index.php">Regístrate aquí</a></p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
+

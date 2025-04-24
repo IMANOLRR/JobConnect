@@ -42,21 +42,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login Candidato</title>
-    <link rel="stylesheet" href="../css/estilos.css">
-    
-</head>
-<body>
-    <div class="container">
-        <h2>Iniciar Sesión como Candidato</h2>
-        <form method="POST" action="../Login/login_candidato.php">
-            <input type="email" name="correo" placeholder="Correo electrónico" required><br>
-            <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-            <button type="submit" <a href="../Candidato/dashboard.php">Ingresar</a></button>
-        </form>
-        <p>¿No tienes cuenta? <a href="../index.php">Regístrate aquí</a></p>
-    </div>
-    <!-- SweetAlert2 + Script para mensajes -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4>🔐 Iniciar Sesión - Candidato</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form method="POST" action="../Login/login_candidato.php">
+                            <div class="mb-3">
+                                <label for="correo" class="form-label">Correo electrónico</label>
+                                <input type="email" name="correo" id="correo" class="form-control" placeholder="ejemplo@correo.com" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contrasena" class="form-label">Contraseña</label>
+                                <input type="password" name="contrasena" id="contrasena" class="form-control" required>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Ingresar</button>
+                            </div>
+                        </form>
+
+                        <div class="mt-3 text-center">
+                            <p>¿No tienes cuenta? <a href="../index.php">Regístrate aquí</a></p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de SweetAlert2 para mostrar mensajes -->
     <script>
         const params = new URLSearchParams(window.location.search);
 
@@ -72,10 +100,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             Swal.fire("❌ Error", "Correo o contraseña incorrectos.", "error");
         }
 
-        // Limpiar la URL para que no se repita el mensaje al recargar
         if (params.has("mensaje")) {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     </script>
+
 </body>
 </html>
+

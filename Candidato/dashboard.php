@@ -4,8 +4,9 @@ include('../navbar.php');
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $usuario_id = $_SESSION['usuario_id'];
 
+    $usuario_id = $_SESSION['usuario_id'];
+    
     $nombres = $_POST['nombres'];
     $apellidos = $_POST['apellidos'];
     $correo = $_POST['correo'];
@@ -28,26 +29,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (isset($_FILES['cv_pdf']) && $_FILES['cv_pdf']['error'] === 0) {
         $cv_nombre = time() . "_" . basename($_FILES['cv_pdf']['name']);
-        $cv_ruta = "../uploads/cv/" . $cv_nombre;
+        $cv_ruta = "../Uploads/cvs/" . $cv_nombre;
         move_uploaded_file($_FILES['cv_pdf']['tmp_name'], $cv_ruta);
         $cv_pdf = $cv_nombre;
     }
 
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === 0) {
         $foto_nombre = time() . "_" . basename($_FILES['foto']['name']);
-        $foto_ruta = "../uploads/fotos/" . $foto_nombre;
+        $foto_ruta = "../Uploads/fotos/" . $foto_nombre;
         move_uploaded_file($_FILES['foto']['tmp_name'], $foto_ruta);
         $foto = $foto_nombre;
     }
 
     // Insertar en la base de datos
     $stmt = $conn->prepare("INSERT INTO candidatos 
-        (id, nombre, apellido, correo, telefono, direccion, ciudad, formacion, experiencia, habilidades, idiomas, objetivo, 
-        logros, disponibilidad, redes, referencias, cv_pdf, foto) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    (nombre, apellido, correo, telefono, direccion, ciudad, formacion, experiencia, habilidades, idiomas, objetivo, 
+    logros, disponibilidad, redes, referencias, cv_pdf, foto) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt->bind_param("isssssssssssssssss", $usuario_id, $nombres, $apellidos, $correo, $telefono, $direccion, $ciudad, 
-    $formacion, $experiencia, $habilidades, $idiomas, $objetivo, $logros, $disponibilidad, $redes, $referencias, $cv_pdf, $foto);
+    $stmt->bind_param("sssssssssssssssss", 
+        $nombres, $apellidos, $correo, $telefono, $direccion, $ciudad, 
+        $formacion, $experiencia, $habilidades, $idiomas, $objetivo, 
+        $logros, $disponibilidad, $redes, $referencias, $cv_pdf, $foto);
+
 
     if ($stmt->execute()) {
         header("Location: ../Candidato/dashboard.php?mensaje=curriculum_guardado");
@@ -68,6 +72,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -249,7 +256,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
     <div class="container">
         <h2>Completa tu Currículum</h2>
-            <form method="POST" action="../Candidato/dashboard.php" enctype="multipart/form-data">
+            <form method="POST" action="" enctype="multipart/form-data">
                 <input type="text" name="nombres" placeholder="Nombre(s)" required><br>
                 <input type="text" name="apellidos" placeholder="Apellido(s)" required><br>
                 <input type="email" name="correo" placeholder="Correo Electrónico" required><br>
@@ -268,7 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <option value="15_dias">En 15 días</option>
                     <option value="1_mes">En 1 mes</option>
                 </select><br>
-                <input type="url" name="linkedin" placeholder="Perfil de LinkedIn (opcional)"><br>
+                <input type="url" name="redes" placeholder="Perfil de LinkedIn (opcional)"><br>
                 <textarea name="referencias" placeholder="Referencias (opcional)"></textarea><br>
 
                 <label>Subir CV en PDF</label>
