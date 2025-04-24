@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($insert->execute()) {
             echo "✅ Registro exitoso. Ahora puedes iniciar sesión.";
-            header("Location: ../login/login.php");
+            header("Location: ../Login/login_empresa.php?mensaje=registro_exitoso");
             exit();
         } else {
             echo "❌ Error al registrar la empresa.";

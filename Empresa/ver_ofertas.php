@@ -26,12 +26,70 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <title>Ofertas Publicadas</title>
     <link rel="stylesheet" href="../css/estilos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 50px;
+        }
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        table td a {
+            color: #28a745;
+            font-size: 16px;
+        }
+        table td a:hover {
+            text-decoration: underline;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        p a {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h2>📄 Ofertas Publicadas</h2>
-        <a href="../Empresa/crear_oferta.php">➕ Crear nueva oferta</a>
-        <table border="1">
+        <a href="../Empresa/crear_oferta.php" class="btn btn-primary">➕ Crear nueva oferta</a>
+        <table>
             <thead>
                 <tr>
                     <th>Título</th>

@@ -1,7 +1,6 @@
 <?php
-include '../navbar.php';
-include '../db.php';
-
+include('../db.php');
+include('../navbar.php');
 
 $rol = $_SESSION['rol'] ?? null;
 
@@ -9,30 +8,6 @@ if ($rol !== 'empresa') {
     header('Location: /index.php');
     exit();
 }
-
-// Obtener las estadísticas
-$sql_ofertas = "SELECT COUNT(*) AS total_ofertas FROM ofertas WHERE empresa_id = ?";
-$sql_postulantes = "SELECT COUNT(*) AS total_postulantes FROM candidatos WHERE id IN (SELECT id FROM ofertas WHERE empresa_id = ?)";
-
-// Preparar y ejecutar consultas
-$stmt_ofertas = $conn->prepare($sql_ofertas);
-$stmt_postulantes = $conn->prepare($sql_postulantes);
-
-$empresa_id = $_SESSION['empresa_id']; // Obtener ID de la empresa desde la sesión
-
-$stmt_ofertas->bind_param("i", $empresa_id);
-$stmt_postulantes->bind_param("i", $empresa_id);
-
-$stmt_ofertas->execute();
-$stmt_postulantes->execute();
-
-$result_ofertas = $stmt_ofertas->get_result()->fetch_assoc();
-$result_postulantes = $stmt_postulantes->get_result()->fetch_assoc();
-
-$stmt_ofertas->close();
-$stmt_postulantes->close();
-// Cerrar conexión a la base de datos
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -43,10 +18,9 @@ $conn->close();
     <title>Dashboard Empresa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
 </head>
 <body>
+
 
 <!-- Contenedor principal -->
 <div class="container-fluid">
@@ -64,7 +38,7 @@ $conn->close();
 
         <!-- Contenido principal -->
         <div class="col-md-9">
-            <h2 class="my-4">Bienvenido, [Nombre de la Empresa]</h2>
+            <h2 class="my-4">Bienvenido</h2>
 
             <!-- Sección de estadísticas -->
             <div class="row mb-4">
@@ -72,7 +46,7 @@ $conn->close();
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Ofertas Publicadas</h5>
-                            <p class="card-text"><?= $result_ofertas['total_ofertas'] ?> ofertas activas</p>
+                            <p class="card-text">5 ofertas activas</p>
                         </div>
                     </div>
                 </div>
@@ -80,7 +54,7 @@ $conn->close();
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Candidatos Aplicados</h5>
-                            <p class="card-text"><?= $result_postulantes['total_postulantes'] ?> postulantes</p>
+                            <p class="card-text">12 postulantes</p>
                         </div>
                     </div>
                 </div>
@@ -96,7 +70,7 @@ $conn->close();
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Visitas al Perfil</h5>
-                            <p class="card-text"><?= $result_visitas['total_visitas'] ?> visitas esta semana</p>
+                            <p class="card-text">250 visitas esta semana</p>
                         </div>
                     </div>
                 </div>
@@ -113,24 +87,36 @@ $conn->close();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    // Obtener ofertas recientes desde la base de datos
-                    include 'dbconnect.php';
-                    $sql_ofertas_recientes = "SELECT * FROM ofertas WHERE empresa_id = ? ORDER BY fecha_publicacion DESC LIMIT 5";
-                    $stmt = $conn->prepare($sql_ofertas_recientes);
-                    $stmt->bind_param("i", $empresa_id);
-                    $stmt->execute();
-                    $result_ofertas_recientes = $stmt->get_result();
-                    while ($oferta = $result_ofertas_recientes->fetch_assoc()):
-                    ?>
                     <tr>
-                        <td><?= $oferta['titulo'] ?></td>
-                        <td><?= $oferta['fecha_publicacion'] ?></td>
-                        <td><a href="/Empresa/ver_postulantes.php?oferta_id=<?= $oferta['id'] ?>" class="btn btn-primary btn-sm">Ver Postulantes</a></td>
+                        <td>Desarrollador Web</td>
+                        <td>10/04/2025</td>
+                        <td><a href="/Empresa/ver_postulantes.php?oferta_id=1" class="btn btn-primary btn-sm">Ver Postulantes</a></td>
                     </tr>
-                    <?php endwhile; ?>
+                    <tr>
+                        <td>Analista de Datos</td>
+                        <td>05/04/2025</td>
+                        <td><a href="/Empresa/ver_postulantes.php?oferta_id=2" class="btn btn-primary btn-sm">Ver Postulantes</a></td>
+                    </tr>
+                    <tr>
+                        <td>Community Manager</td>
+                        <td>01/04/2025</td>
+                        <td><a href="/Empresa/ver_postulantes.php?oferta_id=3" class="btn btn-primary btn-sm">Ver Postulantes</a></td>
+                    </tr>
                 </tbody>
             </table>
+
+            <!-- Mensajes de éxito o error con SweetAlert -->
+            <script>
+                const params = new URLSearchParams(window.location.search);
+
+                if (params.get("mensaje") === "oferta_publicada") {
+                    Swal.fire("✅ ¡Oferta publicada!", "Tu oferta ha sido publicada correctamente.", "success");
+                }
+
+                if (params.get("mensaje") === "postulante_aceptado") {
+                    Swal.fire("✅ ¡Candidato aceptado!", "Has aceptado al candidato correctamente.", "success");
+                }
+            </script>
         </div>
     </div>
 </div>

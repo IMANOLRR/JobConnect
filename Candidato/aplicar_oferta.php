@@ -1,6 +1,7 @@
 <?php
 include('../db.php');
-include('../navbar.php');
+
+session_start();
 
 $usuario_id = $_SESSION['usuario_id'];
 
@@ -46,3 +47,12 @@ if ($verificar->num_rows > 0) {
 $verificar->close();
 $conn->close();
 ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Candidato</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
